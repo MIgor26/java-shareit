@@ -12,7 +12,7 @@ import ru.practicum.shareit.user.model.User;
 @Builder
 public class Item {
 
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Название вещи не может быть пустым")
     private String name;

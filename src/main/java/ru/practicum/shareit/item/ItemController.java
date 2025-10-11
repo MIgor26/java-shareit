@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdDto;
 import ru.practicum.shareit.item.dto.ItemUsersDto;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.Collection;
@@ -22,20 +21,20 @@ public class ItemController {
     }
 
     @PostMapping
-    public Item add(@RequestHeader("X-Sharer-User-Id") Long userId,
-                    @Valid @RequestBody ItemDto item) {
+    public ItemDto add(@RequestHeader("X-Sharer-User-Id") Long userId,
+                       @Valid @RequestBody ItemDto item) {
         return itemService.add(userId, item);
     }
 
     @PatchMapping("/{itemId}")
-    public Item update(@RequestHeader("X-Sharer-User-Id") Long userId,
-                       @PathVariable(name = "itemId") Long itemId,
-                       @Valid @RequestBody ItemUpdDto item) {
+    public ItemDto update(@RequestHeader("X-Sharer-User-Id") Long userId,
+                          @PathVariable(name = "itemId") Long itemId,
+                          @Valid @RequestBody ItemUpdDto item) {
         return itemService.update(userId, itemId, item);
     }
 
     @GetMapping("/{itemId}")
-    public Item findById(@PathVariable(name = "itemId") Long itemId) {
+    public ItemDto findById(@PathVariable(name = "itemId") Long itemId) {
         return itemService.findById(itemId);
     }
 
@@ -45,8 +44,7 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public Collection<Item> findItemsOnText(@RequestParam("text") String text) {
-        System.out.println("Запуск контроллера = " + text);
+    public Collection<ItemDto> findItemsOnText(@RequestParam("text") String text) {
         return itemService.findItemsOnText(text);
     }
 }
