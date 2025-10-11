@@ -31,7 +31,11 @@ public class UserService {
         }
 
         User createUser = userStorage.create(user);
-        if (createUser == null) log.warn("Ошибка при создании пользователя {}", user.getName());
+        if (createUser == null) {
+            String message = "Ошибка при создании пользователя";
+            log.warn(message);
+            return null;
+        }
         log.info("Пользователь {} успешно создан", createUser.getName());
         return createUser;
     }
