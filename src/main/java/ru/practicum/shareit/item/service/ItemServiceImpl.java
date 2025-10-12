@@ -123,12 +123,12 @@ public class ItemServiceImpl implements ItemService {
             throw new NotFoundException(message);
         }
 
-        Collection<ItemUsersDto> items = itemStorage.getUsersItems(userId);
+        Collection<Item> items = itemStorage.getUsersItems(userId);
         if (items.isEmpty()) {
             log.warn("Вещи у пользователя отсутствуют");
         }
         log.info("У пользователя с id = {} найдено {} вещей", userId, items.size());
-        return items;
+        return items.stream().map(ItemMapper::toItemUsersDto).collect(Collectors.toList());
     }
 
     @Override
