@@ -1,35 +1,64 @@
 package ru.practicum.shareit.booking.model;
 
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Data
-@EqualsAndHashCode(of = {"id"})
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "bookings")
+@Getter
+@Setter
 @Builder
 public class Booking {
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @NotNull(message = "Срок начала бронирования не может быть null")
-    @FutureOrPresent(message = "Начало срока бронирования не может быть в прошлом")
-    private LocalDateTime start;
-
-    @NotNull(message = "Срок окончания бронирования не может быть null")
-    @FutureOrPresent(message = "Окончание срока бронирования не может быть в прошлом")
-    private LocalDateTime end;
-
-    @NotNull(message = "Вещь для бронирования не может быть null")
+    @ManyToOne
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
-    @NotNull(message = "Пользователь, осуществляющие бронирование не может быть null")
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime start;
+
+    @Column(name = "end_date", nullable = false)
+    private LocalDateTime end;
+
+    @ManyToOne
+    @JoinColumn(name = "booker_id", nullable = false)
     private User booker;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private BookingStatus status;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Booking booking = (Booking) object;
+        return Objects.equals(id, booking.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", start=" + start +
+                ", end=" + end +
+                ", status=" + status +
+                '}';
+    }
 }
