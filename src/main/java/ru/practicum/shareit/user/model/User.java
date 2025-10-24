@@ -1,22 +1,51 @@
 package ru.practicum.shareit.user.model;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-@Data
-@EqualsAndHashCode(of = {"id"})
+import java.util.Objects;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "users")
+@Getter
+@Setter
 @Builder
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Имя не может быть пустым")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotBlank(message = "Имэйл не может быть пустым")
-    @Email(message = "Имайл должен быть корректного формата")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    // Оставляю переопределение метода как пример того, как нужно переопределять данный метод в Hibernate
+    // Дело в том, что у Hibernate свой механизм и могут быть конфликты.
+    // Это касается только моделей, которые соответствуют таблицам в базе данных.
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || Hibernate.getClass(this) != Hibernate.getClass(object)) return false;
+        User user = (User) object;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

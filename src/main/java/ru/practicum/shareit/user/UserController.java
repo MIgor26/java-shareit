@@ -1,7 +1,10 @@
 package ru.practicum.shareit.user;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserUpdDto;
@@ -12,6 +15,8 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping(path = "/users")
+@Slf4j
+@Validated
 public class UserController {
     private final UserService userService;
 
@@ -22,26 +27,31 @@ public class UserController {
 
     @PostMapping
     public UserDto create(@Valid @RequestBody UserDto user) {
+        log.info("Запрос на создание пользователя {}", user);
         return userService.create(user);
     }
 
     @PatchMapping("/{id}")
-    public UserDto update(@PathVariable long id, @Valid @RequestBody UserUpdDto user) {
+    public UserDto update(@PathVariable @Positive long id, @Valid @RequestBody UserUpdDto user) {
+        log.info("Запрос на редактирование пользователя c id = {}", id);
         return userService.update(id, user);
     }
 
     @GetMapping("/{id}")
-    public UserDto findById(@PathVariable long id) {
+    public UserDto findById(@PathVariable @Positive long id) {
+        log.info("Запрос на поиск пользователя по id = {}", id);
         return userService.findById(id);
     }
 
     @GetMapping
     public Collection<UserDto> getAll() {
+        log.info("Запрос на получение всех пользователей");
         return userService.getAll();
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable @Positive long id) {
+        log.info("Запрос на удаление пользователя c id = {}", id);
         userService.delete(id);
     }
 }

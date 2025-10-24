@@ -8,6 +8,7 @@ import java.util.Collection;
 
 @Service
 public interface UserService {
+
     UserDto create(UserDto user);
 
     UserDto update(Long id, UserUpdDto user);

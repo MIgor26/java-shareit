@@ -1,17 +1,23 @@
 package ru.practicum.shareit.item;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CommentDtoOut;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemUpdDto;
-import ru.practicum.shareit.item.dto.ItemUsersDto;
+import ru.practicum.shareit.item.dto.ItemDtoOut;
 import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.Collection;
 
 @RestController
 @RequestMapping("/items")
+@Slf4j
+@Validated
 public class ItemController {
     private final ItemService itemService;
 
@@ -21,30 +27,44 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto add(@RequestHeader("X-Sharer-User-Id") Long userId,
-                       @Valid @RequestBody ItemDto item) {
+    public ItemDtoOut add(@RequestHeader("X-Sharer-User-Id") @Positive Long userId,
+                          @Valid @RequestBody ItemDto item) {
+        log.info("Запрос на добавление вещи {}", item);
         return itemService.add(userId, item);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto update(@RequestHeader("X-Sharer-User-Id") Long userId,
-                          @PathVariable(name = "itemId") Long itemId,
-                          @Valid @RequestBody ItemUpdDto item) {
+    public ItemDtoOut update(@RequestHeader("X-Sharer-User-Id") @Positive Long userId,
+                             @PathVariable(name = "itemId") @Positive Long itemId,
+                             @RequestBody ItemDto item) {
+        log.info("Запрос на обновление вещи с id = {}", itemId);
         return itemService.update(userId, itemId, item);
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto findById(@PathVariable(name = "itemId") Long itemId) {
-        return itemService.findById(itemId);
+    public ItemDtoOut findById(@RequestHeader("X-Sharer-User-Id") @Positive Long userId,
+                               @PathVariable(name = "itemId") @Positive Long itemId) {
+        log.info("Запрос на поиск вещи по id = {}", itemId);
+        return itemService.findById(userId, itemId);
     }
 
     @GetMapping
-    public Collection<ItemUsersDto> getUsersItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public Collection<ItemDtoOut> getUsersItems(@RequestHeader("X-Sharer-User-Id") @Positive Long userId) {
+        log.info("Запрос на поиск вещей для пользователя с id = {}", userId);
         return itemService.getUsersItems(userId);
     }
 
     @GetMapping("/search")
-    public Collection<ItemDto> findItemsOnText(@RequestParam("text") String text) {
+    public Collection<ItemDtoOut> findItemsOnText(@RequestParam("text") String text) {
+        log.info("Запрос на поиск вещей, содержащих строку = {}", text);
         return itemService.findItemsOnText(text);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDtoOut createComment(@RequestHeader("X-Sharer-User-Id") @Positive Long userId,
+                                       @Valid @RequestBody CommentDto commentDto,
+                                       @PathVariable(name = "itemId") @Positive Long itemId) {
+        log.info("POST Запрос на создание комментария для вещи с id = {} от пользователя с id = {}", itemId, userId);
+        return itemService.createComment(userId, commentDto, itemId);
     }
 }

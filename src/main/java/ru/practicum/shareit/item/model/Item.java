@@ -1,31 +1,46 @@
 package ru.practicum.shareit.item.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
-@Data
-@EqualsAndHashCode(of = {"id"})
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "items")
+@Getter
+@Setter
 @Builder
 public class Item {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Название вещи не может быть пустым")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotBlank(message = "Описание вещи не может быть пустым")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @NotNull(message = "Статус доступности вещи не может быть пустым")
+    @Column(name = "available", nullable = false)
     private Boolean available;
 
-    @NotNull(message = "У вещи должен быть хозяин")
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    private String request; // — если вещь была создана по запросу другого пользователя, то в этом
-    // поле будет храниться ссылка на соответствующий запрос.
+    // !! На счёт связей нужно подумать, может OneToMany
+    @ManyToOne
+    @JoinColumn(name = "request_id")
+    private ItemRequest request;
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

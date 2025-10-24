@@ -9,8 +9,6 @@ import lombok.Data;
 @Builder
 public class ItemDto {
 
-    private Long id;
-
     @NotBlank(message = "Название вещи не может быть пустым")
     private String name;
 
@@ -19,6 +17,4 @@ public class ItemDto {
 
     @NotNull(message = "Статус доступности вещи не может быть пустым")
     private Boolean available;
-
-    private String request;
 }
