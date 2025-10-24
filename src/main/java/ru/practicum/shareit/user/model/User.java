@@ -31,7 +31,7 @@ public class User {
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
-        if (object== null || Hibernate.getClass(this) != Hibernate.getClass(object)) return false;
+        if (object == null || Hibernate.getClass(this) != Hibernate.getClass(object)) return false;
         User user = (User) object;
         return Objects.equals(id, user.id);
     }
