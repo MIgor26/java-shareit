@@ -2,6 +2,7 @@ package ru.practicum.shareit.user.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.util.Objects;
 
@@ -24,10 +25,13 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    // Оставляю переопределение метода как пример того, как нужно переопределять данный метод в Hibernate
+    // Дело в том, что у Hibernate свой механизм и могут быть конфликты.
+    // Это касается только моделей, которые соответствуют таблицам в базе данных.
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (object== null || Hibernate.getClass(this) != Hibernate.getClass(object)) return false;
         User user = (User) object;
         return Objects.equals(id, user.id);
     }

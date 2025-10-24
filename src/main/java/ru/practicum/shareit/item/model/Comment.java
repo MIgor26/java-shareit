@@ -6,8 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
-
 
 @Entity
 @AllArgsConstructor
@@ -37,19 +35,6 @@ public class Comment {
     @Column(name = "created")
     @CreationTimestamp
     private LocalDateTime created;
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Comment comment = (Comment) object;
-        return Objects.equals(id, comment.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 
     @Override
     public String toString() {
