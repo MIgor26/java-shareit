@@ -36,6 +36,7 @@ public class ItemRequest {
 
     @OneToMany
     @JoinColumn(name = "request_id")
+    @Builder.Default
     private List<Item> items = new ArrayList<>();
 
     @Override
