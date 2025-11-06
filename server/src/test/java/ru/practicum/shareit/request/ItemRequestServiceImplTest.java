@@ -27,7 +27,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class RequestServiceImplTest {
+class ItemRequestServiceImplTest {
 
     @Mock
     private ItemRequestRepository requestRepository;

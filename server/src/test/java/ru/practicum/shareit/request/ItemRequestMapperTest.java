@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RequestMapperTest {
+public class ItemRequestMapperTest {
     private final ItemRequest itemRequest = ItemRequest.builder()
             .id(1L)
             .description("description")
