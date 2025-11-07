@@ -7,22 +7,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.user.markers.CreateUser;
+import ru.practicum.shareit.user.markers.UpdateUser;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
 @Slf4j
+@Validated
 public class UserController {
     private final UserClient userClient;
 
     @PostMapping
-    public ResponseEntity<Object> add(@Validated @RequestBody UserDto user) {
+    public ResponseEntity<Object> add(@Validated({CreateUser.class}) @RequestBody UserDto user) {
         log.info("POST запрос в контроллере User на создание пользователя: {}", user);
         return userClient.add(user);
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<Object> update(@RequestBody UserDto userDto, @PathVariable("userId") @Positive Long userId) {
+    public ResponseEntity<Object> update(@Validated({UpdateUser.class}) @RequestBody UserDto userDto,
+                                         @PathVariable("userId") @Positive Long userId) {
         log.info("PATCH запрос в контроллере User на обновление пользователя c id: {}", userId);
         return userClient.update(userId, userDto);
     }
@@ -44,4 +48,5 @@ public class UserController {
         log.info("DELETE запрос в контроллере User на удаление пользователя с id: {}", userId);
         return userClient.deleteById(userId);
     }
+
 }

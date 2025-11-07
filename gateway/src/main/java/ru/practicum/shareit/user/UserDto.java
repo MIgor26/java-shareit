@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.user.markers.CreateUser;
+import ru.practicum.shareit.user.markers.UpdateUser;
+
 
 @Data
 @Builder
@@ -15,10 +18,10 @@ public class UserDto {
 
     private Long id;
 
-    @NotBlank(message = "Имя пользователя не может быть пустым")
+    @NotBlank(groups = CreateUser.class, message = "Имя пользователя не может быть пустым")
     private String name;
 
-    @Email(message = "Email пользователя должен быть корректным")
-    @NotBlank(message = "Email пользователя не может быть пустым")
+    @Email(groups = {CreateUser.class, UpdateUser.class}, message = "Email пользователя должен быть корректным")
+    @NotBlank(groups = CreateUser.class, message = "Email пользователя не может быть пустым")
     private String email;
 }

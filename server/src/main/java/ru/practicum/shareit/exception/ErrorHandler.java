@@ -15,11 +15,11 @@ public class ErrorHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(final NotFoundException e) {
-        log.error(e.getMessage());
+        log.error("Ресурс не найден: {}",e.getMessage());
         return new ErrorResponse("Ресурс не найден. ", e.getMessage());
     }
 
-    @ExceptionHandler({ValidationException.class, MethodArgumentNotValidException.class})
+    @ExceptionHandler({ValidationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidation(final Exception e) {
         log.error(e.getMessage());
@@ -36,14 +36,14 @@ public class ErrorHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleAccessDenied(final AccessDeniedException e) {
-        log.error(e.getMessage());
+        log.error("Ошибка доступа: {}", e.getMessage());
         return new ErrorResponse("Ошибка доступа: ", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(final Exception e) {
-        log.error(e.getMessage());
+        log.error("Внутренняя ошибка сервера {}", e.getMessage());
         return new ErrorResponse("Произошла внутренняя ошибка сервера", "");
     }
 }

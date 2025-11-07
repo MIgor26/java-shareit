@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
-import ru.practicum.shareit.user.dto.UserUpdDto;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 
 import java.util.List;
@@ -47,7 +46,7 @@ class UserServiceImplTest {
 
     @Test
     void updateUserTest() {
-        UserUpdDto updUser = UserUpdDto.builder()
+        UserDto updUser = UserDto.builder()
                 .email("update@update.com")
                 .name("update")
                 .build();

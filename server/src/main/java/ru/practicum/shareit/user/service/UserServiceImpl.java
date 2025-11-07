@@ -10,7 +10,6 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
-import ru.practicum.shareit.user.dto.UserUpdDto;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -37,17 +36,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto update(Long id, UserUpdDto userUpdDto) {
+    public UserDto update(Long id, UserDto userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                             return new NotFoundException("Пользователь с " + id + " не найден");
                         }
                 );
-        String name = userUpdDto.getName();
+        String name = userDto.getName();
         if (name != null && !name.isBlank()) {
             user.setName(name);
         }
-        String email = userUpdDto.getEmail();
+        String email = userDto.getEmail();
         if (email != null && !email.isBlank()) {
             user.setEmail(email);
         }

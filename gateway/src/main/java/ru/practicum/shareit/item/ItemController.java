@@ -15,6 +15,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class ItemController {
 
     private final ItemClient itemClient;
@@ -60,7 +61,7 @@ public class ItemController {
 
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<Object> createComment(@RequestHeader("X-Sharer-User-Id") @Positive Long userId,
-                                                @Validated @RequestBody CommentDto commentDto,
+                                                @Valid @RequestBody CommentDto commentDto,
                                                 @PathVariable("itemId") @Positive Long itemId) {
         log.info("POST запрос в контроллере Item на создание комментария {} для вещи {} от пользователя: {}", commentDto, itemId, userId);
         return itemClient.createComment(userId, commentDto, itemId);

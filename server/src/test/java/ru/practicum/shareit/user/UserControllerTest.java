@@ -9,7 +9,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.dto.UserUpdDto;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public class UserControllerTest {
     @SneakyThrows
     void updateUserWhenUserIsValid() {
         Long userId = 0L;
-        UserUpdDto userDtoToUpdate = UserUpdDto.builder()
+        UserDto userDtoToUpdate = UserDto.builder()
                 .email("update@update.com")
                 .name("update")
                 .build();
